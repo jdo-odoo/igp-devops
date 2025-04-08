@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: abc-deploy
+spec:
+  selector:
+    matchLabels:
+      app: abc-tech
+  replicas: 3
+  template:
+    metadata: 
+      labels:
+        app: abc-tech
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "metrics"
+    spec:
+      containers:
+      - name: abc-app
+        image: jdossougoin/abc:latest
+        ports:
+        - containerPort: 8080
