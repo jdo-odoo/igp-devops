@@ -14,7 +14,7 @@ pipeline
         { 
             steps 
             {
-                git branch:'main',url:'https://github.com/jdo-odoo/igp_mar22.git'
+                git branch:'main',url:'https://github.com/jdo-odoo/igp-devops.git'
             }   
         }
 
@@ -78,21 +78,9 @@ pipeline
                 sh'''
                     export KUBECONFIG=/home/ubuntu/jenkins/.kube/config
                     kubectl cluster-info
-                    kubectl apply -f ${WORKSPACE}/ABC_Technologies/abcdeploy.yaml
-                    kubectl apply -f ${WORKSPACE}/ABC_Technologies/abcservice.yaml
+                    kubectl apply -f ${WORKSPACE}/abcdeploy.yaml
+                    kubectl apply -f ${WORKSPACE}/abcservice.yaml
                 '''
-
-                // withKubeConfig([credentialsId: 'kubeconfig_id', serverUrl: 'abc-k8smaster.example.net:6443']) 
-                // {
-                //     sh '''
-                //         pwd
-                //         ls -l
-                //         find . -name "abcdeploy.yaml"
-                //         kubectl apply -f ./ABC_Technologies/abcdeploy.yaml --validate=false
-                //         kubectl apply -f ./ABC_Technologies/abcservice.yaml --validate=false
-                //     '''
-                // }
-        
             }
         }
 
@@ -101,7 +89,7 @@ pipeline
             steps{
                 sh'''
                     export KUBECONFIG=/home/ubuntu/jenkins/.kube/config
-                    helm upgrade --install prometheus prometheus-community/prometheus --namespace default -f ./ABC_Technologies/prometheus-values.yaml
+                    helm upgrade --install prometheus prometheus-community/prometheus --namespace default -f ${WORKSPACE}/prometheus-values.yaml
                 '''
             }
         }
